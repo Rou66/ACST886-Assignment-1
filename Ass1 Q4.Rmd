@@ -1,0 +1,123 @@
+---
+title: "ACST886 Assignment 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Question 4
+
+#### Life A
+
+```{r}
+require(timevis)
+require(lubridate)
+
+## calculate the age for Life A as on the birthday the same year as death
+## that is the age as on 16/05/1994
+calc_age <- function(birthDate, refDate = Sys.Date()) {
+
+    period <- as.period(new_interval(birthDate, refDate),
+                        unit = "year")
+    period$year
+}
+calc_age("1965-05-16","1994-05-16")
+
+## create a timeline for Life A
+data1 <- data.frame(
+  id      = 1:8,
+  content = c("28_years_old","PA_1","1_Jan preceeding Death","29_years_old","Death",
+              "PA_2","30_years_old","PA_3"),
+  start   = c("1993-05-16","1993-07-21","1994-01-01","1994-05-16","1994-06-22",
+              "1994-07-21","1995-05-16","1995-07-21")
+)
+
+timevis(data1)
+```
+
+As on 16/05/1994, Life A is 29 years old.
+
+(a)
+The death of Life A occurs on 22/06/1994 which is around one month after Life A's 29th birthday. Hence, the recorded age at death for the definition age next birthday at death is 30.
+
+(b)
+The death of Life A occurs on 22/06/1994 and the 1 January preceeding death is the 1/1/1994. Hence, age last birthday on 1/1/1994 is 28.
+
+(c) 
+The death of Life A occurs on 22/06/1994 and it is between the PA_1 and PA_2. The birthday between this peiod is Life A's 29th birthday. Hence, the recoreded age is 29.
+
+#### Life B
+
+```{r}
+## calculate the age for Life B as on the birthday the same year as death
+## that is the age as on 01/03/1993
+calc_age <- function(birthDate, refDate = Sys.Date()) {
+  
+    period <- as.period(new_interval(birthDate, refDate),
+                        unit = "year")
+    period$year
+}
+calc_age("1922-03-01","1993-03-01")
+
+## create a timeline for Life B
+data2 <- data.frame(
+  id      = 1:8,
+  content = c("70_years_old","PA_1","1 Jan preceeding Death","71_years_old","Death",
+              "PA_2","72_years_old","PA_3"),
+  start   = c("1992-03-01","1992-09-23","1993-01-01","1993-03-01","1993-07-21",
+              "1993-09-23","1994-03-01","1994-09-23")
+)
+
+timevis(data2)
+```
+
+As on 01/03/1993, Life B is 71 years old.
+
+(a)
+The death of Life B occurs on 21/07/1993. And the next birthday after death is Life B's 72th birthday. Hence, the recorded age is 72.
+
+(b)
+The death of Life B occurs on 21/07/1993 and the 1 January preceeding death is 1/1/1993. Age last birthday preceeding 1/1/1993 is Life B's 70th birthday, Hence, the recoreded age is 70.
+
+(c)
+The death of Life B occurs on 21/07/1993 which is between PA_1 and PA_2. The birthday in this period is Life B's 71st birthday. Hence, the recoreded age is 71.
+
+
+#### Life C
+
+```{r}
+## calculate the age for Life C as on the birthday the same year as death
+## that is the age as on 21/09/1996
+calc_age <- function(birthDate, refDate = Sys.Date()) {
+
+    period <- as.period(new_interval(birthDate, refDate),
+                        unit = "year")
+    period$year
+
+}
+calc_age("1942-09-21","1996-09-21")
+
+## create a timeline for Life C
+data3 <- data.frame(
+  id      = 1:8,
+  content = c("PA_1","53_years_old","1 Jan preceeding Death","Death","PA_2",
+              "54_years_old","PA_3","55_years_old"),
+  start   = c("1995-06-02","1995-09-21","1996-01-01","1996-04-29","1996-06-02",
+              "1996-09-21","1997-06-02","1997-09-21")
+)
+
+timevis(data3)
+```
+
+As on 21/09/1996, Life C is 54 years old. 
+
+(a)
+The death of Life C occurs on 29/04/1996. The next birthday after death is Life C's 54th birthday. Hence, the recoreded age is 54.
+
+(b)
+The death of Life C occurs on 29/04/1996 and the 1 January preceeding death is 1/1/1996. Age last birthday preceeding 1/1/1996 is Life C's 53rd birthday. Hence, the recorded age is 53.
+
+(c)
+The death of Life C occurs on 29/04/1996 which is between PA_1 and PA_2. The birthday in this peiod is Life C's 53rd birthday. Hence, the recorded age is 53.
