@@ -1,0 +1,78 @@
+---
+title: "ACST886 Assignment 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Question 3
+#### (a)
+We have an annual commission of \$1,000 from 19 March 2020 to 19 March 2049, which is 30 years. In order to calculate the present value of those annual commision, the below formula is used, where $i$ is 0.035 and $n$ is the number of terms. $$pv=\sum_{k=1}^{n}\frac{1000}{(1+i)^n}$$
+
+```{r}
+## create a function to calculate the present value of an annuity
+annuity <- function(i,n){
+  ## i = interest rate
+  ## n = no. of terms
+  an <- (1/i)*(1-(1/(1+i)^n))
+  return(an)
+}
+
+## calculate the present value of the commission
+1000*annuity(0.035,30)
+```
+The present value of the commission is $18,392.05.
+
+#### (b)
+Since the present value now is the sum of the loan amount \$600,000 and the commission \$18,392.05, it is higher than the previous one. Based on the formula $pv=\sum_{k=1}^{n}\frac{instalment}{(1+i)^n}$, when annual instalment remains the same, if the present value goes up, then the interest rate should go down. Hence, the effective rate the bank requires on its fund is lower than the 3.5% p.a. that it communicates publicly.
+
+#### (c)
+This question asks to calculate the effective interest rate $i$. We now have the present value of \$618,392.05 which is the sum of the loan and the present value of the commission calculated in part b above. Number of periods is still 30. The formula used for this question is $$618,392.05=\sum_{k=1}^{30}\frac{32622.8}{(1+i)^{30}}$$
+
+```{r}
+# create a function in terms of interest rate to calculate present value
+pv <- function(i){
+  # create an instalment vector
+  instalment <- c(rep(32622.8,30))
+  # create an discounting vector
+  disc_vec <- 1/(1+i)^(1:30)
+  # present value is the sum of multiple of two vectors
+  pv <- sum(instalment*disc_vec)
+  # we want to use the uniroot function
+  # hence want to return a value that is zero
+  return(pv-618392.05)
+}
+
+# use the uniroot to calculate the interest rate
+# we know that the new interest rate should be less than 0.035
+uniroot(pv,c(0,0.035))
+```
+Hence, the effective interest rate discussed in part b is 3.26%.
+
+#### (d)
+This question asks to calculate the new annual instalment amount using the new effective rate calculated in part c above, where the present value is only the initial loan amount \$600,000. The formula below is used for this question, where $n$ is still 30, $i$ is 3.26%. $$600,000=\sum_{k=1}^{30}\frac{instalment}{(1+0.0326)^{30}}$$
+
+```{r}
+# create a function in terms of instalment to calculate present value
+pv <- function(x){
+  # create an instalment vector
+  instalment <- c(rep(x,30))
+  # create an discounting vector
+  disc_vec <- 1/(1+0.0326)^(1:30)
+  # present value is the sum of multiple of two vectors
+  pv <- sum(instalment*disc_vec)
+  # we want to use the uniroot function
+  # hence want to return a value that is zero
+  return(pv-600000)
+}
+
+## use uniroot to calculate annual instalment
+uniroot(pv,c(30000,40000))
+
+## difference in instalments
+diff <- 32622.8-31649.27
+diff
+```
+Hence, the new annual instalment is \$31649.27, and it is \$973.53 less.
