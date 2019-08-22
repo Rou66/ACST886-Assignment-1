@@ -1,0 +1,33 @@
+---
+title: "ACST886 Assignment 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Question 1
+It is known that the principal amount is $600,000, the rate of interest is 3.5% p.a., and the period is 30 years. The question is asked to calculate the annual instalment.
+
+The formula below is used, where $x$ is the annual instalment, $i$ is the interest rate and $n$ is the number of terms. The uniroot function in r is used to calculate the annual instalment.$$pv=\sum_{k=1}^{n}\frac{x}{(1+i)^n}$$
+
+```{r}
+# create a function in terms of instalment to calculate present value
+pv <- function(x){
+  # create an instalment vector
+  instalment <- c(rep(x,30))
+  # create an discounting vector
+  disc_vec <- 1/(1+0.035)^(1:30)
+  # present value is the sum of multiple of two vectors
+  pv <- sum(instalment*disc_vec)
+  # we want to use the uniroot function
+  # hence want to return a value that is zero
+  return(pv-600000)
+}
+
+## use uniroot to calculate annual instalment
+uniroot(pv,c(30000,40000))
+```
+Hence, the calcuated annual instalment is $32622.80.
