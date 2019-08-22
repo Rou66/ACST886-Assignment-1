@@ -1,0 +1,69 @@
+---
+title: "ACST886 Assignment 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Question 2
+#### (a)
+This question is the same as question 1 above.
+
+```{r}
+# create a function in terms of instalment to calculate present value
+pv <- function(x){
+  # create an instalment vector
+  instalment <- c(rep(x,30))
+  # create an discounting vector
+  disc_vec <- 1/(1+0.035)^(1:30)
+  # present value is the sum of multiple of two vectors
+  pv <- sum(instalment*disc_vec)
+  # we want to use the uniroot function
+  # hence want to return a value that is zero
+  return(pv-600000)
+}
+
+## use uniroot to calculate annual instalment
+uniroot(pv,c(30000,40000))
+```
+Hence, the repayment amount is $32,622.8.
+
+#### (b)
+For this question, we have total annual payment of \$36,122.8 which is the sum of the annual instalment calculated from part a and the annual interest from the offset account. Since the total annual payment is larger, it means that we can repay the whole loan in less than 30 years. 
+
+In order to calculate the number of terms, the following formula is used. $$600000=\sum_{k=1}^{n}\frac{32622.8+3500}{(1+0.035)^{n}}+\frac{100000}{(1+0.035)^n} $$
+
+Once the number of terms has been calculated, we can calculate amount of the last repayment, which is believed to be less than annual instalment amount.
+
+```{r}
+# create a function in terms of instalment to calculate present value
+pv <- function(n){
+  
+  annuity <- function(i,n){
+    ## i = interest rate
+    ## n = no. of terms
+    an <- (1/i)*(1-(1/(1+i)^n))
+    return(an)
+  }
+  
+  pv <- (32622.8+3500)*annuity(0.035,n)+100000/(1.035)^n
+  return(pv-600000)
+}
+uniroot(pv,c(0,30))
+
+## we know that the loan can be repaied between 22nd and 23rd year
+## hence, the last payment is in year 23
+
+## outstanding loan at the end of year 22
+s22 <- ((1+0.035)^22-1)/0.035
+loan_22 <- 600000*(1+0.035)^22-(32622.8+3500)*s22
+## oustandinf loan at the end of year 23
+loan_23 <- loan_22*(1.035)
+## At this time, the loan can be fully repaid
+## hence to calcualte the adjusted final repayment
+last_repayment <- loan_23-3500-100000
+last_repayment
+```
+Hence, the final repayment amount is \$11,484.86.
